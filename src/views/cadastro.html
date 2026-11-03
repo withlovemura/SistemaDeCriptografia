@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fff7fa">
+    <meta name="description" content="Crie sua conta no Cifra Rosa, projeto acadêmico de Cifra de César.">
+    <title>Criar conta | Cifra Rosa</title>
+    <link rel="stylesheet" href="./public/cadastro.css">
+</head>
+<body>
+    <div class="page">
+        <header class="topbar">
+            <a class="brand" href="./login.html" aria-label="Cifra Rosa, voltar para o login">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M7.5 10V7.5a4.5 4.5 0 0 1 9 0V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <rect x="5" y="10" width="14" height="11" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                        <circle cx="12" cy="15.5" r="1.2" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span>Cifra Rosa</span>
+            </a>
+            <span class="topbar-note">Um projeto de Segurança no Desenvolvimento</span>
+        </header>
+
+        <main>
+            <section class="intro" aria-labelledby="intro-title">
+                <p class="eyebrow">Seu espaço começa aqui</p>
+                <h1 id="intro-title">Uma nova conta, <span>novas possibilidades.</span></h1>
+                <p class="intro-copy">
+                    Crie seu acesso para conhecer a Cifra de César e experimentar transformações secretas, letra por letra.
+                </p>
+                <div class="cipher-card" aria-label="Exemplo ilustrativo de cifra">
+                    <p class="cipher-label">Pronto para começar?</p>
+                    <p class="cipher-example">SUA MENSAGEM <span aria-hidden="true">&rarr;</span> <strong>SEU SEGREDO</strong></p>
+                </div>
+            </section>
+
+            <section class="login-card signup-card" aria-labelledby="signup-title">
+                <div class="card-heading">
+                    <h2 id="signup-title">Criar sua conta</h2>
+                    <p>Preencha os campos para começar.</p>
+                </div>
+
+                <form action="/auth/cadastrar" method="post" id="signup-form">
+                    <div class="field">
+                        <label for="nome">Nome</label>
+                        <input
+                            id="nome"
+                            name="nome"
+                            type="text"
+                            placeholder="Como podemos te chamar?"
+                            autocomplete="name"
+                            maxlength="80"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="usuario">Usuário</label>
+                        <input
+                            id="usuario"
+                            name="usuario"
+                            type="text"
+                            placeholder="Escolha seu usuário"
+                            autocomplete="username"
+                            minlength="3"
+                            maxlength="30"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="senha">Senha</label>
+                        <div class="input-wrap">
+                            <input
+                                class="password-input"
+                                id="senha"
+                                name="senha"
+                                type="password"
+                                placeholder="Crie uma senha"
+                                autocomplete="new-password"
+                                minlength="8"
+                                aria-describedby="password-hint"
+                                required
+                            >
+                            <button class="toggle-password" type="button" data-password-toggle="senha" aria-pressed="false">
+                                Mostrar
+                            </button>
+                        </div>
+                        <p class="field-hint" id="password-hint">Use pelo menos 8 caracteres.</p>
+                    </div>
+
+                    <div class="field">
+                        <label for="confirmar-senha">Confirmar senha</label>
+                        <div class="input-wrap">
+                            <input
+                                class="password-input"
+                                id="confirmar-senha"
+                                name="confirmarSenha"
+                                type="password"
+                                placeholder="Digite a senha novamente"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+                            <button class="toggle-password" type="button" data-password-toggle="confirmar-senha" aria-pressed="false">
+                                Mostrar
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="submit-button" type="submit">
+                        Criar conta <span aria-hidden="true">&rarr;</span>
+                    </button>
+                    <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+                </form>
+
+                <p class="card-footer">
+                    Já tem uma conta? <a class="text-link" href="./login.html">Voltar para o login</a>
+                    <span class="footer-note">O cadastro será ativado quando a autenticação e o banco de dados forem implementados.</span>
+                </p>
+            </section>
+        </main>
+
+        <footer>Projeto acadêmico · A Cifra de César tem finalidade didática.</footer>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('senha');
+        const confirmationInput = document.getElementById('confirmar-senha');
+        const signupForm = document.getElementById('signup-form');
+        const formMessage = document.getElementById('form-message');
+        const passwordToggles = document.querySelectorAll('[data-password-toggle]');
+
+        const validatePasswordConfirmation = () => {
+            const passwordsMatch = confirmationInput.value === passwordInput.value;
+            confirmationInput.setCustomValidity(passwordsMatch ? '' : 'As senhas não coincidem.');
+        };
+
+        signupForm.addEventListener('input', () => {
+            formMessage.textContent = '';
+        });
+
+        passwordInput.addEventListener('input', validatePasswordConfirmation);
+        confirmationInput.addEventListener('input', validatePasswordConfirmation);
+
+        passwordToggles.forEach((toggle) => {
+            toggle.addEventListener('click', () => {
+                const input = document.getElementById(toggle.dataset.passwordToggle);
+                const showPassword = input.type === 'password';
+
+                input.type = showPassword ? 'text' : 'password';
+                toggle.textContent = showPassword ? 'Ocultar' : 'Mostrar';
+                toggle.setAttribute('aria-pressed', String(showPassword));
+            });
+        });
+
+        signupForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            validatePasswordConfirmation();
+
+            if (!signupForm.reportValidity()) {
+                return;
+            }
+
+            formMessage.textContent = 'A interface está pronta. O cadastro será ativado quando a autenticação do servidor for implementada.';
+        });
+    </script>
+</body>
+</html>

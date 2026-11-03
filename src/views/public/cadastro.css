@@ -1,0 +1,26 @@
+@import url("./login.css");
+
+.signup-card {
+    max-width: 470px;
+    justify-self: end;
+}
+
+.signup-card .card-heading {
+    margin-bottom: 24px;
+}
+
+.signup-card .field {
+    margin-bottom: 15px;
+}
+
+.field-hint {
+    margin: 7px 0 0;
+    color: var(--muted);
+    font-size: 0.76rem;
+}
+
+@media (max-width: 800px) {
+    .signup-card {
+        max-width: none;
+    }
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fff7fa">
+    <meta name="description" content="Acesse o Cifra Rosa, projeto acadêmico de Cifra de César.">
+    <title>Entrar | Cifra Rosa</title>
+    <!-- Ligação com o arquivo CSS separado -->
+    <link rel="stylesheet" href="./public/login.css">
+</head>
+<body>
+    <div class="page">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="Cifra Rosa, página inicial">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M7.5 10V7.5a4.5 4.5 0 0 1 9 0V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <rect x="5" y="10" width="14" height="11" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                        <circle cx="12" cy="15.5" r="1.2" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span>Cifra Rosa</span>
+            </a>
+            <span class="topbar-note">Um projeto de Segurança no Desenvolvimento</span>
+        </header>
+
+        <main>
+            <section class="intro" aria-labelledby="intro-title">
+                <p class="eyebrow">Criptografia com personalidade</p>
+                <h1 id="intro-title">Suas ideias, em outra <span>frequência.</span></h1>
+                <p class="intro-copy">
+                    Entre para explorar a Cifra de César e descobrir como uma mensagem pode mudar de forma com apenas uma chave.
+                </p>
+                <div class="cipher-card" aria-label="Exemplo ilustrativo de cifra">
+                    <p class="cipher-label">Uma pequena transformação</p>
+                    <p class="cipher-example">OLA, MUNDO <span aria-hidden="true">&rarr;</span> <strong>ROD, PXQGR</strong></p>
+                </div>
+            </section>
+
+            <section class="login-card" aria-labelledby="login-title">
+                <div class="card-heading">
+                    <h2 id="login-title">Boas-vindas!</h2>
+                    <p>Entre com seus dados para continuar.</p>
+                </div>
+
+                <form action="/auth/login" method="post" id="login-form">
+                    <div class="field">
+                        <label for="usuario">Usuário</label>
+                        <input
+                            id="usuario"
+                            name="usuario"
+                            type="text"
+                            placeholder="Digite seu usuário"
+                            autocomplete="username"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="senha">Senha</label>
+                        <div class="input-wrap">
+                            <input
+                                class="password-input"
+                                id="senha"
+                                name="senha"
+                                type="password"
+                                placeholder="Digite sua senha"
+                                autocomplete="current-password"
+                                required
+                            >
+                            <button class="toggle-password" id="toggle-password" type="button" aria-pressed="false">
+                                Mostrar
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="submit-button" type="submit">
+                        Entrar <span aria-hidden="true">&rarr;</span>
+                    </button>
+                    <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+                </form>
+
+                <p class="card-footer">
+                    Ainda não tem uma conta? <a class="text-link" href="./cadastro.html">Criar conta</a>
+                    <span class="footer-note">O acesso será ativado quando a autenticação do servidor for implementada.</span>
+                </p>
+            </section>
+        </main>
+
+        <footer>Projeto acadêmico · A Cifra de César tem finalidade didática.</footer>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('senha');
+        const togglePassword = document.getElementById('toggle-password');
+        const loginForm = document.getElementById('login-form');
+        const formMessage = document.getElementById('form-message');
+
+        togglePassword.addEventListener('click', () => {
+            const isPasswordHidden = passwordInput.type === 'password';
+            passwordInput.type = isPasswordHidden ? 'text' : 'password';
+            togglePassword.textContent = isPasswordHidden ? 'Ocultar' : 'Mostrar';
+            togglePassword.setAttribute('aria-pressed', String(isPasswordHidden));
+        });
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            formMessage.textContent = 'A interface está pronta. O acesso será ativado quando a autenticação do servidor for implementada.';
+        });
+    </script>
+</body>
+</html>
