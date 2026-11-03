@@ -1,0 +1,309 @@
+@import url("./login.css");
+
+main {
+    grid-template-columns: minmax(0, 0.9fr) minmax(390px, 1fr);
+    gap: clamp(42px, 7vw, 88px);
+}
+
+.page-nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.nav-link {
+    color: var(--muted);
+    font-size: 0.84rem;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: var(--pink-dark);
+}
+
+.nav-link-disabled {
+    color: #a8959d;
+    cursor: not-allowed;
+}
+
+.nav-link-disabled:hover {
+    color: #a8959d;
+}
+
+.nav-link:focus-visible,
+.step-button:focus-visible,
+.clear-button:focus-visible,
+.copy-button:focus-visible {
+    border-radius: 5px;
+    outline: 3px solid rgba(173, 49, 95, 0.38);
+    outline-offset: 3px;
+}
+
+.encrypt-card {
+    max-width: 520px;
+    justify-self: end;
+}
+
+.encrypt-card .card-heading {
+    margin-bottom: 24px;
+}
+
+.field textarea {
+    display: block;
+    width: 100%;
+    min-height: 132px;
+    padding: 13px 15px;
+    resize: vertical;
+    border: 1px solid #eadde3;
+    border-radius: 11px;
+    outline: none;
+    background: #fffdfd;
+    color: var(--ink);
+    font: inherit;
+    line-height: 1.55;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.field textarea::placeholder {
+    color: #aa99a1;
+}
+
+.field textarea:focus-visible,
+.shift-control input:focus-visible {
+    border-color: var(--pink);
+    box-shadow: 0 0 0 4px rgba(217, 79, 131, 0.14);
+}
+
+.field-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 7px;
+}
+
+.field-hint,
+.character-count {
+    color: var(--muted);
+    font-size: 0.74rem;
+    line-height: 1.5;
+}
+
+.character-count {
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.shift-field {
+    margin-top: 22px;
+    margin-bottom: 0;
+}
+
+.shift-control {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    gap: 8px;
+}
+
+.step-button {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid #eadde3;
+    border-radius: 10px;
+    background: white;
+    color: var(--pink-dark);
+    cursor: pointer;
+    font-size: 1.25rem;
+}
+
+.step-button:hover {
+    border-color: var(--pink);
+    background: var(--pink-light);
+}
+
+.shift-control input {
+    width: 72px;
+    height: 44px;
+    border: 1px solid #eadde3;
+    border-radius: 10px;
+    outline: none;
+    background: #fffdfd;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 700;
+    text-align: center;
+}
+
+.shift-control input::-webkit-inner-spin-button,
+.shift-control input::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
+}
+
+.shift-range {
+    margin-left: 4px;
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.encrypt-card .submit-button {
+    margin-top: 23px;
+}
+
+.clear-button {
+    display: block;
+    margin: 13px auto 0;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 650;
+}
+
+.clear-button:hover {
+    color: var(--pink-dark);
+}
+
+.demo-note {
+    max-width: 400px;
+    margin: 28px 0 0;
+    color: var(--muted);
+    font-size: 0.79rem;
+    line-height: 1.65;
+}
+
+.result-panel {
+    margin-top: 22px;
+    padding: 19px;
+    border: 1px solid rgba(217, 79, 131, 0.2);
+    border-radius: 15px;
+    background: #fff8fb;
+}
+
+.result-panel[hidden] {
+    display: none;
+}
+
+.result-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 13px;
+}
+
+.result-kicker {
+    margin: 0 0 3px;
+    color: var(--pink-dark);
+    font-size: 0.7rem;
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.result-heading h3 {
+    margin: 0;
+    font-size: 1.08rem;
+    letter-spacing: -0.025em;
+}
+
+.key-badge {
+    flex: 0 0 auto;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: var(--pink-light);
+    color: var(--pink-dark);
+    font-size: 0.77rem;
+    font-weight: 750;
+}
+
+.result-panel textarea {
+    display: block;
+    width: 100%;
+    min-height: 94px;
+    padding: 12px;
+    resize: vertical;
+    border: 1px solid #eadde3;
+    border-radius: 9px;
+    background: white;
+    color: var(--ink);
+    font: 0.9rem/1.55 Consolas, "Courier New", monospace;
+}
+
+.copy-button {
+    min-height: 39px;
+    margin-top: 12px;
+    padding: 0 13px;
+    border: 1px solid rgba(173, 49, 95, 0.25);
+    border-radius: 9px;
+    background: white;
+    color: var(--pink-dark);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.copy-button:hover {
+    background: var(--pink-light);
+}
+
+.result-note {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.55;
+}
+
+.sr-only {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.encrypt-card .card-footer {
+    font-size: 0.78rem;
+}
+
+@media (max-width: 800px) {
+    main {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .page-nav {
+        gap: 15px;
+    }
+
+    .encrypt-card {
+        max-width: none;
+    }
+
+    .demo-note {
+        margin-top: 18px;
+    }
+}
+
+@media (max-width: 420px) {
+    .field-meta {
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .result-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fff7fa">
+    <meta name="description" content="Criptografe uma mensagem com a Cifra de César no Cifra Rosa.">
+    <title>Criptografar | Cifra Rosa</title>
+    <link rel="stylesheet" href="./public/criptografar.css">
+</head>
+<body>
+    <div class="page">
+        <header class="topbar">
+            <a class="brand" href="./login.html" aria-label="Cifra Rosa, voltar para o login">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M7.5 10V7.5a4.5 4.5 0 0 1 9 0V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        <rect x="5" y="10" width="14" height="11" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                        <circle cx="12" cy="15.5" r="1.2" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span>Cifra Rosa</span>
+            </a>
+            <nav class="page-nav" aria-label="Navegação principal">
+                <a class="nav-link" href="./descriptografar.html">Descriptografar</a>
+                <a class="nav-link" href="./login.html">Sair</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="intro" aria-labelledby="intro-title">
+                <p class="eyebrow">Cifra de César</p>
+                <h1 id="intro-title">Escreva. Desloque. <span>Surpreenda.</span></h1>
+                <p class="intro-copy">
+                    Escolha uma mensagem e um deslocamento. Cada letra muda de posição no alfabeto; espaços e pontuação continuam no lugar.
+                </p>
+                <div class="cipher-card" aria-label="Exemplo de deslocamento de três posições">
+                    <p class="cipher-label">Exemplo · chave 3</p>
+                    <p class="cipher-example">OLA, MUNDO <span aria-hidden="true">&rarr;</span> <strong>ROD, PXQGR</strong></p>
+                </div>
+                <p class="demo-note">
+                    A Cifra de César é um exercício didático, não deve ser usada para proteger informações reais.
+                </p>
+            </section>
+
+            <section class="login-card encrypt-card" aria-labelledby="encrypt-title">
+                <div class="card-heading">
+                    <h2 id="encrypt-title">Criptografar mensagem</h2>
+                    <p>Preencha os campos para gerar seu texto cifrado.</p>
+                </div>
+
+                <form id="encrypt-form">
+                    <div class="field">
+                        <label for="mensagem">Mensagem original</label>
+                        <textarea
+                            id="mensagem"
+                            name="mensagem"
+                            rows="5"
+                            maxlength="5000"
+                            placeholder="Escreva sua mensagem aqui..."
+                            aria-describedby="message-hint"
+                            required
+                        ></textarea>
+                        <div class="field-meta">
+                            <span class="field-hint" id="message-hint">Até 5.000 caracteres. Acentos, espaços e símbolos são preservados.</span>
+                            <span class="character-count" id="character-count" aria-live="polite">0 / 5000</span>
+                        </div>
+                    </div>
+
+                    <div class="field shift-field">
+                        <label for="deslocamento">Chave de deslocamento</label>
+                        <div class="shift-control">
+                            <button class="step-button" type="button" data-step="-1" aria-label="Diminuir deslocamento">−</button>
+                            <input
+                                id="deslocamento"
+                                name="deslocamento"
+                                type="number"
+                                min="1"
+                                max="25"
+                                step="1"
+                                value="3"
+                                inputmode="numeric"
+                                required
+                            >
+                            <button class="step-button" type="button" data-step="1" aria-label="Aumentar deslocamento">+</button>
+                            <span class="shift-range">1 a 25 posições</span>
+                        </div>
+                    </div>
+
+                    <button class="submit-button" type="submit">
+                        Criptografar <span aria-hidden="true">&rarr;</span>
+                    </button>
+                    <button class="clear-button" type="reset">Limpar campos</button>
+                    <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+                </form>
+
+                <section class="result-panel" id="result-panel" aria-labelledby="result-title" hidden>
+                    <div class="result-heading">
+                        <div>
+                            <p class="result-kicker">Mensagem pronta</p>
+                            <h3 id="result-title">Seu texto cifrado</h3>
+                        </div>
+                        <span class="key-badge" id="key-badge"></span>
+                    </div>
+                    <label class="sr-only" for="mensagem-cifrada">Resultado da criptografia</label>
+                    <textarea id="mensagem-cifrada" rows="4" readonly></textarea>
+                    <button class="copy-button" id="copy-result" type="button">Copiar mensagem</button>
+                    <p class="result-note">
+                        Anote a chave de deslocamento para reverter a mensagem. Nesta versão demonstrativa, ela ainda não é salva nem controlada pelo servidor.
+                    </p>
+                </section>
+
+                <p class="card-footer">
+                    Esta é uma demonstração no navegador. A geração e o uso único de chaves com persistência no banco ainda precisam ser implementados no servidor.
+                </p>
+            </section>
+        </main>
+
+        <footer>Projeto acadêmico · A Cifra de César tem finalidade didática.</footer>
+    </div>
+
+    <script>
+        const encryptForm = document.getElementById('encrypt-form');
+        const messageInput = document.getElementById('mensagem');
+        const shiftInput = document.getElementById('deslocamento');
+        const resultPanel = document.getElementById('result-panel');
+        const encryptedMessage = document.getElementById('mensagem-cifrada');
+        const keyBadge = document.getElementById('key-badge');
+        const formMessage = document.getElementById('form-message');
+        const characterCount = document.getElementById('character-count');
+        const copyResultButton = document.getElementById('copy-result');
+
+        const shiftLetter = (character, shift) => {
+            const code = character.charCodeAt(0);
+            const alphabetStart = code >= 65 && code <= 90 ? 65 : code >= 97 && code <= 122 ? 97 : null;
+
+            if (alphabetStart === null) {
+                return character;
+            }
+
+            return String.fromCharCode(((code - alphabetStart + shift) % 26) + alphabetStart);
+        };
+
+        const encryptMessage = (message, shift) =>
+            Array.from(message, (character) => shiftLetter(character, shift)).join('');
+
+        const updateCharacterCount = () => {
+            characterCount.textContent = `${messageInput.value.length} / 5000`;
+        };
+
+        messageInput.addEventListener('input', () => {
+            updateCharacterCount();
+            formMessage.textContent = '';
+        });
+
+        shiftInput.addEventListener('input', () => {
+            formMessage.textContent = '';
+        });
+
+        document.querySelectorAll('[data-step]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const nextShift = Number(shiftInput.value) + Number(button.dataset.step);
+                shiftInput.value = String(Math.min(25, Math.max(1, nextShift)));
+                shiftInput.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+        });
+
+        encryptForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            formMessage.textContent = '';
+
+            if (!encryptForm.reportValidity()) {
+                return;
+            }
+
+            const shift = Number(shiftInput.value);
+            encryptedMessage.value = encryptMessage(messageInput.value, shift);
+            keyBadge.textContent = `Chave: ${shift}`;
+            resultPanel.hidden = false;
+        });
+
+        encryptForm.addEventListener('reset', () => {
+            resultPanel.hidden = true;
+            encryptedMessage.value = '';
+            formMessage.textContent = '';
+            window.setTimeout(updateCharacterCount, 0);
+        });
+
+        copyResultButton.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(encryptedMessage.value);
+                formMessage.textContent = 'Mensagem copiada.';
+            } catch (error) {
+                formMessage.textContent = 'Não foi possível copiar automaticamente. Selecione e copie o texto cifrado.';
+            }
+        });
+    </script>
+</body>
+</html>
